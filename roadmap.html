@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>My Roadmap – SkillPath Decoder</title>
+  <meta name="description" content="Your personalised visual career skill roadmap with prerequisites and parallel tracks."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    .roadmap-stage{margin-bottom:48px}
+    .stage-header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .stage-badge{
+      background:linear-gradient(135deg,var(--violet),var(--cyan));
+      color:#fff;font-size:.75rem;font-weight:700;
+      padding:4px 14px;border-radius:100px;
+      font-family:'Outfit',sans-serif;
+    }
+    .stage-label{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;color:#fff}
+    .stage-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+    .stage-skills{display:flex;flex-wrap:wrap;gap:16px}
+
+    .roadmap-skill-node{
+      background:var(--glass);border:2px solid var(--border);
+      border-radius:var(--radius);padding:16px 20px;
+      min-width:200px;max-width:260px;flex:1;
+      position:relative;cursor:pointer;
+      transition:all var(--transition);
+    }
+    .roadmap-skill-node:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+    .roadmap-skill-node.status-mastered{border-color:var(--green);background:rgba(16,185,129,.08)}
+    .roadmap-skill-node.status-learning{border-color:var(--violet);background:rgba(124,58,237,.1)}
+    .roadmap-skill-node.status-gap.unlocked{border-color:var(--gold);background:rgba(245,158,11,.05)}
+    .roadmap-skill-node.status-locked{opacity:.5;cursor:not-allowed}
+
+    .node-status-dot{
+      width:10px;height:10px;border-radius:50%;
+      position:absolute;top:14px;right:14px;
+    }
+    .status-mastered .node-status-dot{background:var(--green);box-shadow:0 0 8px var(--green)}
+    .status-learning .node-status-dot{background:var(--violet-l);box-shadow:0 0 8px var(--violet-l);animation:blink 2s infinite}
+    .status-gap.unlocked .node-status-dot{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+    .status-locked .node-status-dot{background:var(--text-3)}
+
+    .node-name{font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;color:#fff;margin-bottom:4px;padding-right:20px}
+    .node-category{font-size:.75rem;color:var(--text-3);margin-bottom:10px}
+    .node-conf-bar{height:4px;border-radius:100px;background:rgba(255,255,255,.08);overflow:hidden}
+    .node-conf-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--violet),var(--cyan))}
+    .node-prereqs{font-size:.7rem;color:var(--text-3);margin-top:8px}
+
+    .parallel-tag{
+      font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+      color:var(--cyan);background:rgba(6,182,212,.12);
+      border:1px solid rgba(6,182,212,.2);
+      padding:2px 8px;border-radius:100px;
+      display:inline-block;margin-top:6px;
+    }
+
+    .roadmap-legend{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:32px}
+    .legend-item{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--text-2)}
+    .legend-dot{width:12px;height:12px;border-radius:50%}
+
+    /* Update Skill Modal */
+    .confidence-big{font-size:3rem;font-weight:900;font-family:'Outfit',sans-serif;text-align:center;color:#fff;margin:12px 0}
+    .status-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+    .status-btn{
+      padding:12px;border-radius:var(--radius-sm);border:2px solid var(--border);
+      background:var(--glass);color:var(--text-2);font-size:.85rem;font-weight:600;
+      cursor:pointer;text-align:center;transition:all var(--transition);
+    }
+    .status-btn:hover{border-color:var(--violet)}
+    .status-btn.active{border-color:var(--violet);background:rgba(124,58,237,.2);color:#fff}
+    .status-btn.active-mastered{border-color:var(--green);background:rgba(16,185,129,.15);color:var(--green)}
+    .status-btn.active-learning{border-color:var(--violet-l);background:rgba(124,58,237,.2);color:var(--violet-l)}
+    .status-btn.active-gap{border-color:var(--gold);background:rgba(245,158,11,.1);color:var(--gold-l)}
+  </style>
+</head>
+<body class="app-layout auth-pending">
+
+  <!-- SIDEBAR (same across all pages) -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">SkillPath <span class="accent">Decoder</span></span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+        <a class="sidebar-link" href="dashboard.html"><span class="sidebar-link-icon">🏠</span> Dashboard</a>
+        <a class="sidebar-link active" href="roadmap.html"><span class="sidebar-link-icon">🗺️</span> My Roadmap</a>
+        <a class="sidebar-link" href="skills.html"><span class="sidebar-link-icon">⚡</span> Skills</a>
+        <a class="sidebar-link" href="resources.html"><span class="sidebar-link-icon">📚</span> Resources</a>
+        <a class="sidebar-link" href="quiz.html"><span class="sidebar-link-icon">🎯</span> Quizzes</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="flex items-center gap-12">
+        <div class="avatar">SP</div>
+        <div>
+          <div class="text-sm font-bold text-white" id="sidebarCareerTitle">–</div>
+          <div class="text-xs text-muted" id="sidebarLevel">–</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <div class="top-bar">
+      <span class="top-bar-title">🗺️ My Roadmap</span>
+      <div class="top-bar-right">
+        <span id="topBarGoal" class="chip violet"></span>
+        <div class="avatar">SP</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <div id="noGoalMsg" class="empty-state" style="display:none">
+        <span class="empty-icon">🗺️</span>
+        <div class="empty-title">No Roadmap Yet</div>
+        <div class="empty-sub">Go to Dashboard and set a career goal to generate your roadmap.</div>
+        <a href="dashboard.html" class="btn btn-primary">Set Career Goal</a>
+      </div>
+
+      <div id="roadmapContent" style="display:none">
+        <!-- Legend -->
+        <div class="roadmap-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--green);box-shadow:0 0 6px var(--green)"></div> Mastered</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--violet-l);box-shadow:0 0 6px var(--violet-l)"></div> In Progress</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div> Available (Unlocked)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--text-3)"></div> Locked (prereqs needed)</div>
+        </div>
+
+        <div id="roadmapStages"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Update Skill Modal -->
+  <div class="modal-overlay" id="updateSkillModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="updateSkillTitle">Update Skill</span>
+        <button class="modal-close" id="closeUpdateSkill">✕</button>
+      </div>
+      <p class="text-muted mb-16" id="updateSkillCategory"></p>
+
+      <div class="form-group">
+        <label class="form-label">Confidence Level</label>
+        <div class="confidence-big" id="confBig">5</div>
+        <input type="range" min="0" max="10" value="5" class="confidence-slider" id="modalConfSlider"/>
+        <div class="flex justify-between mt-4" style="font-size:.75rem;color:var(--text-3)">
+          <span>0 – No knowledge</span><span>10 – Expert</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Learning Status</label>
+        <div class="status-selector">
+          <button class="status-btn" data-status="gap" id="btn-status-gap">⚠️ Gap<br/><small style="font-weight:400;color:var(--text-3)">Not started</small></button>
+          <button class="status-btn" data-status="learning" id="btn-status-learning">🔵 Learning<br/><small style="font-weight:400;color:var(--text-3)">In progress</small></button>
+          <button class="status-btn" data-status="mastered" id="btn-status-mastered">✅ Mastered<br/><small style="font-weight:400;color:var(--text-3)">Completed</small></button>
+        </div>
+      </div>
+
+      <div class="flex gap-12">
+        <button class="btn btn-primary w-full" id="btnSaveSkill">Save Changes</button>
+        <a href="" class="btn btn-ghost" id="btnGoToResources" style="white-space:nowrap">📚 Resources</a>
+        <a href="" class="btn btn-ghost" id="btnGoToQuiz" style="white-space:nowrap">🎯 Quiz</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <span class="toast-icon" id="toastIcon">✅</span>
+    <span id="toastMsg">Saved!</span>
+  </div>
+
+  <script type="module" src="js/data.js"></script>
+  <script type="module" src="js/roadmap.js"></script>
+  <script type="module" src="js/private-route.js"></script>
+</body>
+</html>

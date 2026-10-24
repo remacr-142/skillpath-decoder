@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkillPath Decoder – Your Personalized Career Roadmap</title>
+  <meta name="description" content="SkillPath Decoder transforms your career goal into a personalized, adaptive skill roadmap. Identify skill gaps, track progress, and get curated free resources." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="landing-page">
+
+  <!-- ── NAVBAR ── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a class="nav-logo" href="index.html">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">SkillPath <span class="accent">Decoder</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="#how" class="nav-link">How It Works</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="auth.html" class="btn btn-primary btn-sm">Get Started →</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#how">How It Works</a>
+      <a href="#features">Features</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="auth.html" class="btn btn-primary">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <canvas id="particleCanvas"></canvas>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Adaptive Career Intelligence
+      </div>
+      <h1 class="hero-title">
+        Decode Your<br />
+        <span class="gradient-text">Career Roadmap</span>
+      </h1>
+      <p class="hero-subtitle">
+        Transform any career goal into a personalised, step-by-step skill roadmap.
+        Identify gaps, track mastery, and get curated free resources — all in one place.
+      </p>
+      <div class="hero-cta">
+        <a href="auth.html" class="btn btn-primary btn-lg pulse-btn">
+          Build My Roadmap
+          <span class="btn-arrow">→</span>
+        </a>
+        <a href="#how" class="btn btn-ghost btn-lg">
+          See How It Works
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-pill"><strong>50+</strong> Career Paths</div>
+        <div class="stat-pill"><strong>500+</strong> Skills Mapped</div>
+        <div class="stat-pill"><strong>Free</strong> Resources</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="roadmap-preview">
+        <div class="rp-node rp-node--done" style="top:10%;left:15%">
+          <span class="rp-icon">✓</span>
+          <span class="rp-label">Python Basics</span>
+        </div>
+        <div class="rp-node rp-node--active" style="top:35%;left:50%">
+          <span class="rp-icon">◎</span>
+          <span class="rp-label">Machine Learning</span>
+        </div>
+        <div class="rp-node rp-node--locked" style="top:62%;left:20%">
+          <span class="rp-icon">◉</span>
+          <span class="rp-label">Deep Learning</span>
+        </div>
+        <div class="rp-node rp-node--locked" style="top:62%;left:70%">
+          <span class="rp-icon">◉</span>
+          <span class="rp-label">MLOps</span>
+        </div>
+        <div class="rp-node rp-node--locked" style="top:85%;left:45%">
+          <span class="rp-icon">★</span>
+          <span class="rp-label">ML Engineer</span>
+        </div>
+        <svg class="rp-lines" viewBox="0 0 400 400">
+          <line x1="90" y1="50" x2="210" y2="145" stroke="url(#lg1)" stroke-width="2" stroke-dasharray="6 4"/>
+          <line x1="210" y1="145" x2="100" y2="255" stroke="url(#lg1)" stroke-width="2" stroke-dasharray="6 4"/>
+          <line x1="210" y1="145" x2="295" y2="255" stroke="url(#lg1)" stroke-width="2" stroke-dasharray="6 4"/>
+          <line x1="100" y1="255" x2="190" y2="345" stroke="url(#lg2)" stroke-width="2" stroke-dasharray="6 4"/>
+          <line x1="295" y1="255" x2="190" y2="345" stroke="url(#lg2)" stroke-width="2" stroke-dasharray="6 4"/>
+          <defs>
+            <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7c3aed"/>
+              <stop offset="100%" stop-color="#06b6d4"/>
+            </linearGradient>
+            <linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#06b6d4"/>
+              <stop offset="100%" stop-color="#f59e0b"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section class="section" id="how">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Process</span>
+        <h2 class="section-title">How SkillPath Works</h2>
+        <p class="section-sub">Four intelligent steps from goal to mastery</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card" data-step="1">
+          <div class="step-number">01</div>
+          <div class="step-icon">🎯</div>
+          <h3>Set Your Goal</h3>
+          <p>Choose your dream career — from AI Engineer to UX Designer. Our system decodes exactly what it takes.</p>
+        </div>
+        <div class="step-card" data-step="2">
+          <div class="step-number">02</div>
+          <div class="step-icon">📊</div>
+          <h3>Assess Your Skills</h3>
+          <p>Rate your current confidence for each required skill. The system identifies your gaps and strengths instantly.</p>
+        </div>
+        <div class="step-card" data-step="3">
+          <div class="step-number">03</div>
+          <div class="step-icon">🗺️</div>
+          <h3>Get Your Roadmap</h3>
+          <p>Receive a personalised learning path — parallel tracks for independent skills, sequential for prerequisites.</p>
+        </div>
+        <div class="step-card" data-step="4">
+          <div class="step-number">04</div>
+          <div class="step-icon">🏆</div>
+          <h3>Learn & Validate</h3>
+          <p>Access curated free resources, take quizzes to validate mastery, and watch your progress soar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURES ── -->
+  <section class="section section-alt" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Capabilities</span>
+        <h2 class="section-title">Everything You Need</h2>
+        <p class="section-sub">A complete career intelligence platform</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card feature-card--big">
+          <div class="feature-icon">🧠</div>
+          <h3>Adaptive Skill Mapping</h3>
+          <p>Dynamically maps prerequisites and independent skills, creating an optimal learning sequence tailored to you.</p>
+          <div class="feature-tag">Core Engine</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📈</div>
+          <h3>Progress Tracking</h3>
+          <p>Visual dashboards showing mastery levels and completion percentages across your entire roadmap.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔗</div>
+          <h3>Free Resource Curation</h3>
+          <p>Curated links to free courses, certifications, workshops, and hands-on projects for every skill.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✅</div>
+          <h3>Quiz Validation</h3>
+          <p>Take skill-specific quizzes to validate your knowledge and officially mark skills as mastered.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Goal Remapping</h3>
+          <p>Switch career goals at any time — the system intelligently transfers your existing skills to the new path.</p>
+        </div>
+        <div class="feature-card feature-card--big">
+          <div class="feature-icon">⚡</div>
+          <h3>Parallel Learning Tracks</h3>
+          <p>Maximise your time by identifying which skills can be learned simultaneously versus sequentially.</p>
+          <div class="feature-tag">Smart Scheduling</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA BANNER ── -->
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to decode your career path?</h2>
+        <p>Join thousands of students making informed, measurable progress toward their goals.</p>
+        <a href="auth.html" class="btn btn-primary btn-lg">
+          Start Building My Roadmap →
+        </a>
+      </div>
+      <div class="cta-orb"></div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="logo-icon">◈</span>
+          <span class="logo-text">SkillPath <span class="accent">Decoder</span></span>
+          <p>Empowering students to make measurable, informed progress toward their career goals.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Platform</h4>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="roadmap.html">My Roadmap</a>
+            <a href="skills.html">Skills Library</a>
+            <a href="resources.html">Resources</a>
+          </div>
+          <div class="footer-col">
+            <h4>Learn</h4>
+            <a href="#how">How It Works</a>
+            <a href="#features">Features</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 SkillPath Decoder. Built for students, by learners.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/landing.js"></script>
+</body>
+</html>

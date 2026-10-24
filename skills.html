@@ -1,0 +1,469 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Skills – SkillPath Decoder</title>
+
+  <meta
+    name="description"
+    content="Manage and update all skills in your personalised career roadmap."
+  >
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      align-items: center;
+    }
+
+    .filter-btn {
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: rgba(124, 58, 237, 0.2);
+      border-color: var(--violet);
+      color: #fff;
+    }
+
+    .filter-search {
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: var(--text);
+      outline: none;
+      min-width: 200px;
+      transition: border-color var(--transition);
+    }
+
+    .filter-search:focus {
+      border-color: var(--violet);
+    }
+
+    .filter-search::placeholder {
+      color: var(--text-3);
+    }
+
+    .skill-card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .skill-card-actions .btn {
+      flex: 1;
+      font-size: 0.75rem;
+      padding: 6px 10px;
+    }
+
+    .prereq-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      color: var(--text-3);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 2px 8px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      margin: 2px;
+    }
+
+    /* Make filters and modal usable on smaller screens */
+    @media (max-width: 600px) {
+      .filter-search {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .filter-bar {
+        gap: 8px;
+      }
+
+      .skill-card-actions {
+        flex-wrap: wrap;
+      }
+
+      .modal {
+        width: calc(100% - 24px);
+        max-width: 480px;
+      }
+    }
+  </style>
+</head>
+
+<body class="app-layout auth-pending">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">
+          SkillPath <span class="accent">Decoder</span>
+        </span>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">
+
+        <div class="sidebar-section-label">Main</div>
+
+        <a class="sidebar-link" href="dashboard.html">
+          <span class="sidebar-link-icon">🏠</span>
+          Dashboard
+        </a>
+
+        <a class="sidebar-link" href="roadmap.html">
+          <span class="sidebar-link-icon">🗺️</span>
+          My Roadmap
+        </a>
+
+        <a class="sidebar-link active" href="skills.html">
+          <span class="sidebar-link-icon">⚡</span>
+          Skills
+        </a>
+
+        <a class="sidebar-link" href="resources.html">
+          <span class="sidebar-link-icon">📚</span>
+          Resources
+        </a>
+
+        <a class="sidebar-link" href="quiz.html">
+          <span class="sidebar-link-icon">🎯</span>
+          Quizzes
+        </a>
+
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="flex items-center gap-12">
+
+        <div class="avatar">SP</div>
+
+        <div>
+          <div
+            class="text-sm font-bold text-white"
+            id="sidebarCareerTitle"
+          >–</div>
+
+          <div
+            class="text-xs text-muted"
+            id="sidebarLevel"
+          >–</div>
+        </div>
+
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- Main content -->
+  <div class="main-content">
+
+    <div class="top-bar">
+      <span class="top-bar-title">⚡ Skills</span>
+
+      <div class="top-bar-right">
+        <span id="topBarGoal" class="chip violet"></span>
+        <div class="avatar">SP</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Displayed when no career goal is selected -->
+      <div
+        id="noGoalMsg"
+        class="empty-state"
+        style="display: none;"
+      >
+        <span class="empty-icon">⚡</span>
+
+        <div class="empty-title">No Skills Yet</div>
+
+        <div class="empty-sub">
+          Choose a career goal on the dashboard to generate your skills, roadmap, and quizzes.
+        </div>
+
+        <a href="dashboard.html" class="btn btn-primary">
+          Set Career Goal
+        </a>
+      </div>
+
+      <!-- Skills content -->
+      <div id="skillsContent" style="display: none;">
+
+        <div
+          class="flex justify-between items-center mb-24"
+          style="flex-wrap: wrap; gap: 16px;"
+        >
+
+          <div>
+            <h1
+              style="font-family: 'Outfit', sans-serif;
+                     font-size: 1.5rem;
+                     font-weight: 800;
+                     color: #fff;"
+              id="skillsPageTitle"
+            >
+              Skills
+            </h1>
+
+            <p
+              class="text-muted text-sm"
+              id="skillsPageSub"
+            ></p>
+          </div>
+
+          <div class="flex gap-12" style="flex-wrap: wrap;">
+            <a href="roadmap.html" class="btn btn-outline btn-sm">
+              🗺️ View Roadmap
+            </a>
+            <a href="quiz.html" class="btn btn-outline btn-sm">
+              🎯 Quizzes
+            </a>
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              id="btnUpdateAll"
+            >
+              + Update Skills
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Search and status filters -->
+        <div class="filter-bar">
+
+          <input
+            type="search"
+            placeholder="🔍  Search skills..."
+            class="filter-search"
+            id="skillSearch"
+            aria-label="Search skills"
+          >
+
+          <button
+            type="button"
+            class="filter-btn active"
+            data-filter="all"
+          >
+            All
+          </button>
+
+          <button
+            type="button"
+            class="filter-btn"
+            data-filter="gap"
+          >
+            ⚠️ Gaps
+          </button>
+
+          <button
+            type="button"
+            class="filter-btn"
+            data-filter="learning"
+          >
+            🔵 Learning
+          </button>
+
+          <button
+            type="button"
+            class="filter-btn"
+            data-filter="mastered"
+          >
+            ✅ Mastered
+          </button>
+
+          <button
+            type="button"
+            class="filter-btn"
+            data-filter="unlocked"
+          >
+            🔓 Unlocked
+          </button>
+
+        </div>
+
+        <!-- Skill cards are rendered by skills.js -->
+        <div class="skills-grid" id="skillsGrid"></div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Update skill modal -->
+  <div
+    class="modal-overlay"
+    id="updateSkillModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalSkillTitle"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <span class="modal-title" id="modalSkillTitle">
+          Update Skill
+        </span>
+
+        <button
+          type="button"
+          class="modal-close"
+          id="closeModal"
+          aria-label="Close modal"
+        >
+          ✕
+        </button>
+
+      </div>
+
+      <p
+        class="text-muted text-sm mb-20"
+        id="modalSkillDesc"
+      ></p>
+
+      <!-- Confidence level -->
+      <div class="form-group">
+
+        <label class="form-label" for="modalSlider">
+          Confidence Level:
+          <span
+            id="modalConfVal"
+            class="text-cyan font-bold"
+          >5/10</span>
+        </label>
+
+        <input
+          type="range"
+          min="0"
+          max="10"
+          value="5"
+          class="confidence-slider"
+          id="modalSlider"
+        >
+
+        <div
+          class="flex justify-between mt-4"
+          style="font-size: 0.75rem; color: var(--text-3);"
+        >
+          <span>0 – None</span>
+          <span>5 – Intermediate</span>
+          <span>10 – Expert</span>
+        </div>
+
+      </div>
+
+      <!-- Skill status -->
+      <div class="form-group">
+
+        <label class="form-label" for="modalStatus">
+          Status
+        </label>
+
+        <select class="form-select" id="modalStatus">
+          <option value="gap">⚠️ Gap – Not started</option>
+          <option value="learning">🔵 Learning – In progress</option>
+          <option value="mastered">✅ Mastered – Completed</option>
+        </select>
+
+      </div>
+
+      <div id="customSkillContentFields" style="display:none;">
+        <div class="form-group">
+          <label class="form-label" for="modalResources">Learning resources</label>
+          <textarea class="form-textarea" id="modalResources" rows="4" placeholder="One per line: Title | https://example.com | workshop | free | 2 days&#10;Types: workshop, training, course, youtube, doc, cert, project"></textarea>
+          <p class="form-hint">Add a title and http:// or https:// link. Include the type, optionally mark it free or paid, and add a duration or schedule if known.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="modalQuizQuestions">Quiz questions</label>
+          <textarea class="form-textarea" id="modalQuizQuestions" rows="6" placeholder="One per line: Question | correct answer | wrong answer 1 | wrong answer 2 | wrong answer 3 | explanation"></textarea>
+          <p class="form-hint">Add relevant questions for this skill. Each question needs one correct and three incorrect answers.</p>
+        </div>
+        <p class="form-hint mb-16" id="customContentError" role="alert" style="color:var(--red);display:none"></p>
+      </div>
+
+      <!-- Modal actions -->
+      <div class="flex gap-12 mt-4">
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          id="btnSaveModal"
+          style="flex: 1;"
+        >
+          Save Changes
+        </button>
+
+        <a
+          href="resources.html"
+          id="modalResourcesLink"
+          class="btn btn-ghost"
+        >
+          📚 Resources
+        </a>
+
+        <a
+          href="quiz.html"
+          id="modalQuizLink"
+          class="btn btn-ghost"
+        >
+          🎯 Quiz
+        </a>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  >
+    <span class="toast-icon" id="toastIcon">✅</span>
+    <span id="toastMsg">Saved!</span>
+  </div>
+
+  <!-- JavaScript dependencies: load data before skills logic -->
+  <script type="module" src="js/data.js"></script>
+  <script type="module" src="js/skills.js"></script>
+  <script type="module" src="js/private-route.js"></script>
+</body>
+</html>

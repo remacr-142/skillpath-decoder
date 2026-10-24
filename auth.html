@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="Sign in or create your SkillPath Decoder account to start planning your career roadmap."/>
+  <title>Sign in or create an account – SkillPath Decoder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="auth-page">
+  <main class="auth-shell">
+    <header class="auth-topbar">
+      <a class="nav-logo" href="index.html" aria-label="SkillPath Decoder home">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">SkillPath <span class="accent">Decoder</span></span>
+      </a>
+      <a class="auth-back" href="index.html">← Back to home</a>
+    </header>
+
+    <div class="auth-layout">
+      <section class="auth-intro" aria-labelledby="authIntroTitle">
+        <div class="auth-eyebrow">Your next chapter starts here</div>
+        <h1 class="auth-title" id="authIntroTitle">Make your next move <span class="gradient-text">with a plan.</span></h1>
+        <p class="auth-description">Build a career roadmap around your goals, find the skills you need, and keep your progress moving forward.</p>
+        <div class="auth-preview" aria-hidden="true">
+          <div class="auth-preview-heading">
+            <span>Your learning path</span>
+            <span class="auth-preview-status">In progress</span>
+          </div>
+          <div class="auth-preview-path">
+            <span class="auth-preview-node">✓</span>
+            <span class="auth-preview-line"></span>
+            <span class="auth-preview-node">◎</span>
+            <span class="auth-preview-line"></span>
+            <span class="auth-preview-node">✦</span>
+          </div>
+          <p class="auth-preview-caption">Small steps. Skills that stack. A future you choose.</p>
+        </div>
+      </section>
+
+      <section class="auth-card" aria-labelledby="authTitle">
+        <div class="auth-card-heading">
+          <h2 id="authTitle">Welcome back</h2>
+          <p id="authSubtitle">Sign in to pick up where you left off.</p>
+        </div>
+
+        <div class="auth-tabs" role="tablist" aria-label="Account access">
+          <button class="auth-tab" id="loginTab" type="button" role="tab" aria-selected="true" aria-controls="authForm" data-auth-mode="login">Sign in</button>
+          <button class="auth-tab" id="registerTab" type="button" role="tab" aria-selected="false" aria-controls="authForm" data-auth-mode="register" tabindex="-1">Create account</button>
+        </div>
+
+        <form class="auth-form" id="authForm" novalidate>
+          <div class="auth-field" id="nameField" hidden>
+            <label class="auth-label" for="fullName">Your name</label>
+            <input class="auth-input" id="fullName" name="name" type="text" placeholder="e.g. Alex Morgan" autocomplete="name" maxlength="80" disabled/>
+          </div>
+
+          <div class="auth-field">
+            <label class="auth-label" for="email">Email address</label>
+            <input class="auth-input" id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required/>
+          </div>
+
+          <div class="auth-field">
+            <label class="auth-label" for="password">Password</label>
+            <div class="auth-input-wrap">
+              <input class="auth-input auth-input--password" id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required/>
+              <button class="auth-password-toggle" type="button" data-password-target="password" aria-label="Show password" aria-pressed="false">Show</button>
+            </div>
+            <span class="auth-password-hint" id="passwordHint" hidden>Use at least 8 characters.</span>
+          </div>
+
+          <div class="auth-field" id="confirmField" hidden>
+            <label class="auth-label" for="confirmPassword">Confirm password</label>
+            <div class="auth-input-wrap">
+              <input class="auth-input auth-input--password" id="confirmPassword" name="confirmPassword" type="password" placeholder="Enter your password again" autocomplete="new-password" disabled/>
+              <button class="auth-password-toggle" type="button" data-password-target="confirmPassword" aria-label="Show confirm password" aria-pressed="false">Show</button>
+            </div>
+          </div>
+
+          <div class="auth-options" id="loginOptions">
+            <label class="auth-check"><input type="checkbox" name="remember" checked/> <span>Remember me</span></label>
+            <button class="auth-text-button" id="forgotPassword" type="button">Forgot password?</button>
+          </div>
+
+          <label class="auth-check" id="termsField" hidden>
+            <input id="acceptTerms" type="checkbox" name="terms" disabled/>
+            <span>I agree to the terms of use and privacy policy.</span>
+          </label>
+
+          <p class="auth-message" id="authMessage" role="status" aria-live="polite" hidden></p>
+          <button class="btn btn-primary auth-submit" id="submitButton" type="submit">Sign in <span aria-hidden="true">→</span></button>
+        </form>
+
+        <div class="auth-divider">or</div>
+        <a class="btn btn-ghost auth-guest" href="index.html">Explore SkillPath</a>
+        <p class="auth-legal">Your learning journey, on your terms.</p>
+      </section>
+    </div>
+  </main>
+  <script type="module" src="js/auth.js"></script>
+</body>
+</html>

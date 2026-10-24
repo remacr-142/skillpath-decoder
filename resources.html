@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Resources – SkillPath Decoder</title>
+
+  <meta
+    name="description"
+    content="Curated free learning resources, certifications, and projects for every skill in your roadmap."
+  >
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .resource-type-filter {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .skill-group {
+      margin-bottom: 40px;
+    }
+
+    .skill-group-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .skill-group-header:hover {
+      border-color: rgba(124, 58, 237, 0.3);
+    }
+
+    .skill-group-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: #fff;
+      font-size: 1rem;
+      flex: 1;
+    }
+
+    .skill-group-meta {
+      font-size: 0.8rem;
+      color: var(--text-3);
+    }
+
+    .skill-group-toggle {
+      color: var(--text-3);
+      transition: transform var(--transition);
+    }
+
+    .skill-group.collapsed .skill-group-toggle {
+      transform: rotate(-90deg);
+    }
+
+    .skill-group-resources {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .skill-group.collapsed .skill-group-resources {
+      display: none;
+    }
+
+    .resource-free-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--green);
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 2px 7px;
+      border-radius: 100px;
+    }
+  </style>
+</head>
+
+<body class="app-layout auth-pending">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">
+          SkillPath <span class="accent">Decoder</span>
+        </span>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Main</div>
+
+        <a class="sidebar-link" href="dashboard.html">
+          <span class="sidebar-link-icon">🏠</span>
+          Dashboard
+        </a>
+
+        <a class="sidebar-link" href="roadmap.html">
+          <span class="sidebar-link-icon">🗺️</span>
+          My Roadmap
+        </a>
+
+        <a class="sidebar-link" href="skills.html">
+          <span class="sidebar-link-icon">⚡</span>
+          Skills
+        </a>
+
+        <a class="sidebar-link active" href="resources.html">
+          <span class="sidebar-link-icon">📚</span>
+          Resources
+        </a>
+
+        <a class="sidebar-link" href="quiz.html">
+          <span class="sidebar-link-icon">🎯</span>
+          Quizzes
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="flex items-center gap-12">
+        <div class="avatar">SP</div>
+
+        <div>
+          <div
+            class="text-sm font-bold text-white"
+            id="sidebarCareerTitle"
+          >–</div>
+
+          <div
+            class="text-xs text-muted"
+            id="sidebarLevel"
+          >–</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <div class="top-bar">
+      <span class="top-bar-title">📚 Resources</span>
+
+      <div class="top-bar-right">
+        <span id="topBarGoal" class="chip violet"></span>
+        <div class="avatar">SP</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <div
+        id="noGoalMsg"
+        class="empty-state"
+        style="display: none;"
+      >
+        <span class="empty-icon">📚</span>
+
+        <div class="empty-title">No Resources Yet</div>
+
+        <div class="empty-sub">
+          Set a career goal to get your curated resource list.
+        </div>
+
+        <a href="dashboard.html" class="btn btn-primary">
+          Go to Dashboard
+        </a>
+      </div>
+
+      <div id="resourcesContent" style="display: none;">
+
+        <div
+          class="flex justify-between items-center mb-16"
+          style="flex-wrap: wrap; gap: 16px;"
+        >
+          <div>
+            <h1
+              style="font-family: 'Outfit', sans-serif;
+                     font-size: 1.5rem;
+                     font-weight: 800;
+                     color: #fff;"
+            >
+              Learning Resources
+            </h1>
+
+            <p class="text-muted text-sm" id="resourcesSubtitle">
+                Resources linked to the skills in your roadmap
+            </p>
+          </div>
+
+          <div class="flex gap-8">
+            <select
+              class="form-select"
+              id="skillFilter"
+              style="min-width: 180px;
+                     border-radius: 100px;
+                     padding: 8px 16px;"
+            >
+              <option value="all">All Skills</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="resource-type-filter" id="typeFilters">
+          <button
+            type="button"
+            class="filter-btn active"
+            data-type="all"
+          >
+            All Types
+          </button>
+
+          <button
+            type="button"
+            class="filter-btn"
+            data-type="course"
+          >
+            📖 Courses
+          </button>
+
+          <button
+            type="button"
+            class="filter-btn"
+            data-type="workshop"
+          >
+            🧑‍🏫 Workshops
+          </button>
+
+          <button
+            type="button"
+            class="filter-btn"
+            data-type="training"
+          >
+            🏫 Training Classes
+          </button>
+
+          <button
+            type="button"
+            class="filter-btn"
+            data-type="youtube"
+          >
+            ▶️ Videos
+          </button>
+
+          <button
+            type="button"
+            class="filter-btn"
+            data-type="cert"
+          >
+            🏅 Certifications
+          </button>
+
+          <button
+            type="button"
+            class="filter-btn"
+            data-type="doc"
+          >
+            📄 Docs
+          </button>
+
+          <button
+            type="button"
+            class="filter-btn"
+            data-type="project"
+          >
+            🛠️ Projects
+          </button>
+        </div>
+
+        <div id="resourcesList"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/data.js"></script>
+  <script type="module" src="js/resources.js"></script>
+  <script type="module" src="js/private-route.js"></script>
+</body>
+</html>
